@@ -27,14 +27,11 @@
                   </li>
                   <li class="nav-item">
                     <a class="nav-link" href="{% url 'djangoapp:contact' %}">Contact Us</a>
-                  </li>
-                  <li class="nav-item">
-                    <a class="nav-link" href="#">Pricing</a>
-                  </li>                  
+                  </li>                 
                 </ul>
               </div>
             
-            {%if user.is_authenticated%}
+            {% if user.is_authenticated %}
             <div>
               <b >user.first_name</b>
               <a  class="btn btn-outline-primary text-end px-2" href="">Sign Out</a>              
@@ -43,25 +40,15 @@
             <b >user.first_name</b>
               <form class="d-flex px-2" role="search" action="{% url 'djangoapp:login' %}" method="POST">
                 {% csrf_token %}                 
-                <input class="form-control me-2" type="username" placeholder="username" aria-label="username">
-                <input class="form-control me-2" type="password" placeholder="password" aria-label="Search">
+                <input class="form-control me-2" type="username" placeholder="username" name="username">
+                <input class="form-control me-2" type="password" placeholder="password" name="psw">
                 <button class="btn btn-primary" type="submit" >Login</button>
               </form>
-              <a  class="btn btn-outline-primary text-end me-2" href="">Sign Up</a>
+              <a  class="btn btn-outline-primary text-end me-2" href="{% url 'djangoapp:registration' %}">Sign Up</a>
             {% endif %}
-            </div>
-            
-            
-            
-
+            </div>  
           </nav>
           <hr>
-
-
-       
-    <!-- Remove this line the first time you edit this file -->
-     This is the index page of your Django app!
-    <!--Add a nav bar here -->
 
     <!--Add a dealer table here -->
 
