@@ -33,13 +33,23 @@
                   </li>                  
                 </ul>
               </div>
-              <form class="d-flex" role="search">
+            
+            {%if user.is_authenticated%}
+            <div>
+              <b >user.first_name</b>
+              <a  class="btn btn-outline-primary text-end px-2" href="">Sign Out</a>              
+            </div>        
+            {% else %}
+            <b >user.first_name</b>
+              <form class="d-flex px-2" role="search" >
+                {% csrf_token %} 
+                <!-- action="" method="POST" -->
                 <input class="form-control me-2" type="username" placeholder="username" aria-label="username">
                 <input class="form-control me-2" type="password" placeholder="password" aria-label="Search">
                 <button class="btn btn-primary" type="submit">Login</button>
               </form>
-              
               <a  class="btn btn-outline-primary text-end me-2" href="">Sign Up</a>
+            {% endif %}
             </div>
             
             
