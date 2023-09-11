@@ -33,12 +33,11 @@
             
             {% if user.is_authenticated %}
             <div>
-              <b >user.first_name</b>
-              <a  class="btn btn-outline-primary text-end px-2" href="">Sign Out</a>              
+              <b >{{user.username}}</b>
+              <a  class="btn btn-outline-primary text-end px-2" href=" {% url 'djangoapp:logout' %}">Sign Out</a>              
             </div>        
             {% else %}
-            <b >user.first_name</b>
-              <form class="d-flex px-2" role="search" action="{% url 'djangoapp:login' %}" method="POST">
+            <form class="d-flex px-2" role="search" action="{% url 'djangoapp:login' %}" method="POST">
                 {% csrf_token %}                 
                 <input class="form-control me-2" type="username" placeholder="username" name="username">
                 <input class="form-control me-2" type="password" placeholder="password" name="psw">

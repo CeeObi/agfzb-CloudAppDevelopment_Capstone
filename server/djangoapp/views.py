@@ -39,11 +39,14 @@ def login_request(request):
         else:
             context['message'] = "Invalid username or password."
             return render(request, 'djangoapp/login.html', context)
-    return render(request, "djangoapp/login.html", context)
+    else:
+        context['message'] = "Invalid username or password."
+        return render(request, "djangoapp/login.html", context)
 
 # Create a `logout_request` view to handle sign out request
 def logout_request(request):
    if request.method == "GET":
+       logout(request)
        return redirect('djangoapp:index')
 
 # Create a `registration_request` view to handle sign up request
@@ -67,3 +70,5 @@ def get_dealerships(request):
 # def add_review(request, dealer_id):
 # ...
 
+
+#Just need to create user and tryout login and out
