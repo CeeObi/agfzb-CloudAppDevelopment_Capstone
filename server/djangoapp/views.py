@@ -27,8 +27,9 @@ def contact(request):
         return render(request, "djangoapp/contact.html")
 
 # Create a `login_request` view to handle sign in request
-# def login_request(request):
-# ...
+def login_request(request):
+   if request.method == "POST":
+       return redirect('djangoapp:index')
 
 # Create a `logout_request` view to handle sign out request
 # def logout_request(request):

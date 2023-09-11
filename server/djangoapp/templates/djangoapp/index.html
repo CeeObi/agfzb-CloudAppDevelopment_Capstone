@@ -41,12 +41,11 @@
             </div>        
             {% else %}
             <b >user.first_name</b>
-              <form class="d-flex px-2" role="search" >
-                {% csrf_token %} 
-                <!-- action="" method="POST" -->
+              <form class="d-flex px-2" role="search" action="{% url 'djangoapp:login' %}" method="POST">
+                {% csrf_token %}                 
                 <input class="form-control me-2" type="username" placeholder="username" aria-label="username">
                 <input class="form-control me-2" type="password" placeholder="password" aria-label="Search">
-                <button class="btn btn-primary" type="submit">Login</button>
+                <button class="btn btn-primary" type="submit" >Login</button>
               </form>
               <a  class="btn btn-outline-primary text-end me-2" href="">Sign Up</a>
             {% endif %}
