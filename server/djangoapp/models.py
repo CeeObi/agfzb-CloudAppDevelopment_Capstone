@@ -13,7 +13,7 @@ class CarMake(models.Model):
     name = models.CharField(max_length=200)
     description = models.CharField(max_length=200)
     def __str__(self):
-        return f"The car created is {self.name}"    
+        return f"{self.name} {self.description}"    
 
 
 # <HINT> Create a Car Model model `class CarModel(models.Model):`:
