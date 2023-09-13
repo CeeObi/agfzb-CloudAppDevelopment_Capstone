@@ -29,9 +29,9 @@ class CarModel(models.Model):
     SUV = "suv"
     WAGON = "wagon"
     CHOICE=[(SEDAN,"Sedan"),(SUV,"SUV"),(WAGON,"WAGON")]
-    model=models.ForeignKey(CarMake, null=True, on_delete=models.CASCADE)
-    name=models.CharField(max_length=200)
     id = models.IntegerField(primary_key=True)
+    name=models.CharField(max_length=200)
+    model=models.ForeignKey(CarMake, null=True, on_delete=models.CASCADE)        
     bodytype = models.CharField(max_length=200,choices=CHOICE)
     year = models.DateField(default=now)
     def __str__(self):
