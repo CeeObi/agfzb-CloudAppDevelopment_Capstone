@@ -74,13 +74,13 @@ def get_dealerships(request):
 def get_dealer_details(request, dealer_id):
     context = {}
     if request.method == "GET":
-        url = "https://chukwudimaco-3000.theiadocker-0-labs-prod-theiak8s-4-tor01.proxy.cognitiveclass.ai/api/get_reviews"
+        url = "https://chukwudimaco-5000.theiadocker-0-labs-prod-theiak8s-4-tor01.proxy.cognitiveclass.ai/api/get_reviews"
         #?id=15"
                      
         # Get dealers from the URL
-       reviews = get_dealer_reviews_from_cf(url, dealerId=dealer_id)
+        reviews = get_dealer_reviews_from_cf(url, dealerId=dealer_id)
         # Concat all dealer's short name
-        dealer_names = '=>'.join([dealer.name for dealer in dealerships])
+        dealer_names = '=>'.join([review.name for review in reviews])
         # Return a list of dealer short name
         return HttpResponse(dealer_names)
     return render(request, 'djangoapp/index.html', context)
