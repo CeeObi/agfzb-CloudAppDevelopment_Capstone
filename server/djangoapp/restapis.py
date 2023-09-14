@@ -7,10 +7,13 @@ from requests.auth import HTTPBasicAuth
 # Create a `get_request` to make HTTP GET requests
 def get_request(url,**kwargs): 
     print(f"get for {url}") 
-    try:        
-        response = requests.get(url=url, params=kwargs, headers={'Content-Type': 'application/json'})
+    try:      
+        if api_key:
+            response = requests.get(url=url, params=kwargs["params"], headers={'Content-Type': 'application/json'}, auth=HTTPBasicAuth('apikey', api_key))
+        else:
+            response = requests.get(url=url, params=params, headers={'Content-Type': 'application/json'})
         #response = requests.get(url="https://chukwudimaco-5000.theiadocker-0-labs-prod-theiak8s-4-tor01.proxy.cognitiveclass.ai/api/get_reviews",params={'id': 15},headers={'Content-Type': 'application/json'})
-             #, auth=HTTPBasicAuth('apikey', api_key))
+             
         print(response)
     except: 
         print("Network exception occurred")    
@@ -54,12 +57,15 @@ def get_dealers_from_cf(url, **kwargs):
 
 # Create a get_dealer_reviews_from_cf method to get reviews by dealer id from a cloud function
 def get_dealer_reviews_from_cf(url, **kwargs):
-    results = []    
-    dealer_id=kwargs['dealerId']
+    results = []        
+    params=dict()
+    params["id"]=kwargs['dealerId']
     # Call get_request with a URL parameter    
-    json_result = get_request(url, id=dealer_id)
+    json_result = get_request(url, params=params)
     if json_result:
         print(json_result)
+        
+        
         # Get the row list in JSON as dealers
         dealers = json_result #["rows"]
         # For each dealer object
@@ -71,8 +77,9 @@ def get_dealer_reviews_from_cf(url, **kwargs):
             # Create a DealerReview object with values in `doc` object            
             dealerReview_obj = DealerReview(dealership=dealer_doc["dealership"], name=dealer_doc["name"], purchase=dealer_doc["purchase"],
                                    review=dealer_doc["review"], purchase_date=dealer_doc["purchase_date"], car_make=dealer_doc["car_make"],
-                                   car_model=dealer_doc["car_model"], car_year=dealer_doc["car_year"], sentiment="Positive", id=dealer_doc["id"])
-            results.append(dealerReview_obj)
+                                   car_model=dealer_doc["car_model"], car_year=dealer_doc["car_year"], sentiment="", id=dealer_doc["id"])
+            dealerReview_obj.sentiment = analyze_review_sentiments(dealerReview_obj.review)
+            results.append(dealerReview_obj)            
     return results
 
 
@@ -83,8 +90,25 @@ def get_dealer_reviews_from_cf(url, **kwargs):
 
 
 # Create an `analyze_review_sentiments` method to call Watson NLU and analyze text
-# def analyze_review_sentiments(text):
+def analyze_review_sentiments(text):
 # - Call get_request() with specified arguments
+    url="https://api.au-syd.natural-language-understanding.watson.cloud.ibm.com/instances/e0e38ebd-6770-4fee-b7da-36fa1ecb1072"
+    apikey="672NiaCf3cNKAkwlLskiuuTAwjbgcY_XZjU7nloPd8RX"
+    params = dict()
+    params["text"] = kwargs["text"]
+    params["version"] = kwargs["version"]
+    params["features"] = kwargs["features"]
+    params["return_analyzed_text"] = kwargs["return_analyzed_text"]
+
+    label = get_request(url,params=params,api_key=apikey)
+
+    print(label)
+    return label
+
+#   response = requests.get(url, params=params, headers={'Content-Type': 'application/json'},
+#                                     auth=HTTPBasicAuth('apikey', api_key))
+
+
 # - Get the returned sentiment label such as Positive or Negative
 
 
