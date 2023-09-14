@@ -6,12 +6,13 @@ from requests.auth import HTTPBasicAuth
 
 # Create a `get_request` to make HTTP GET requests
 def get_request(url,**kwargs): 
-    print(f"get for {url}") 
+    print(f"GET for {url}")     
     try:      
-        if api_key:
-            response = requests.get(url=url, params=kwargs["params"], headers={'Content-Type': 'application/json'}, auth=HTTPBasicAuth('apikey', api_key))
+        if "api_key" in kwargs:
+            print("YESTAKEYSY")            
+            response = requests.get(url=url, params=kwargs["params"], headers={'Content-Type': 'application/json'}, auth=HTTPBasicAuth('apikey', kwargs["api_key"]))
         else:
-            response = requests.get(url=url, params=params, headers={'Content-Type': 'application/json'})
+            response = requests.get(url=url, params=kwargs["params"], headers={'Content-Type': 'application/json'})
         #response = requests.get(url="https://chukwudimaco-5000.theiadocker-0-labs-prod-theiak8s-4-tor01.proxy.cognitiveclass.ai/api/get_reviews",params={'id': 15},headers={'Content-Type': 'application/json'})
              
         print(response)
@@ -60,20 +61,16 @@ def get_dealer_reviews_from_cf(url, **kwargs):
     results = []        
     params=dict()
     params["id"]=kwargs['dealerId']
-    # Call get_request with a URL parameter    
-    json_result = get_request(url, params=params)
+    # Call get_request with a URL parameter        
+    json_result = get_request(url, params=params)    
     if json_result:
-        print(json_result)
-        
-        
         # Get the row list in JSON as dealers
         dealers = json_result #["rows"]
         # For each dealer object
         for dealer in dealers:
             # Get its content in `doc` object
             #dealer_doc = dealer["doc"]
-            dealer_doc = dealer
-            print(dealer_doc)
+            dealer_doc = dealer            
             # Create a DealerReview object with values in `doc` object            
             dealerReview_obj = DealerReview(dealership=dealer_doc["dealership"], name=dealer_doc["name"], purchase=dealer_doc["purchase"],
                                    review=dealer_doc["review"], purchase_date=dealer_doc["purchase_date"], car_make=dealer_doc["car_make"],
@@ -93,16 +90,16 @@ def get_dealer_reviews_from_cf(url, **kwargs):
 def analyze_review_sentiments(text):
 # - Call get_request() with specified arguments
     url="https://api.au-syd.natural-language-understanding.watson.cloud.ibm.com/instances/e0e38ebd-6770-4fee-b7da-36fa1ecb1072"
-    apikey="672NiaCf3cNKAkwlLskiuuTAwjbgcY_XZjU7nloPd8RX"
+    apikey="672NiaCf3cNKAkwlLskiuuTAwjbgcY_XZjU7nloPd8RX"    
     params = dict()
-    params["text"] = kwargs["text"]
-    params["version"] = kwargs["version"]
-    params["features"] = kwargs["features"]
-    params["return_analyzed_text"] = kwargs["return_analyzed_text"]
+    params["text"] = text #kwargs["text"]
+    # params["version"] = kwargs["version"]
+    # params["features"] = kwargs["features"]
+    # params["return_analyzed_text"] = kwargs["return_analyzed_text"]
 
     label = get_request(url,params=params,api_key=apikey)
 
-    print(label)
+    print(f"ANALYSIS SAYS: {label}")
     return label
 
 #   response = requests.get(url, params=params, headers={'Content-Type': 'application/json'},
