@@ -12,16 +12,6 @@ def get_request(url,**kwargs):
     print(f"GET for {url}")     
     try:  
         response = requests.get(url=url, params=kwargs, headers={'Content-Type': 'application/json'})            
-        # if kwargs:   
-        #     # if "api_key" in kwargs:
-        #     #     print(kwargs["params"])                            
-        #     #     print(kwargs["api_key"])
-        #     #     print(url)
-        #     #     response = requests.post(url=url, params=kwargs["params"], headers={'Content-Type': 'application/json'}, auth=HTTPBasicAuth('apikey', kwargs["api_key"]))
-        #     # else:
-        #     response = requests.get(url=url, params=kwargs["params"], headers={'Content-Type': 'application/json'})            
-        # else:
-        #     response = requests.get(url=url, headers={'Content-Type': 'application/json'})        
     except: 
         print("Network exception occurred")    
     status_code=response.status_code
@@ -29,11 +19,19 @@ def get_request(url,**kwargs):
     json_data= json.loads(response.text)
     return json_data
 
-
-
 # Create a `post_request` to make HTTP POST requests
 # e.g., response = requests.post(url, params=kwargs, json=payload)
-
+def post_request(url,json_payload,**kwargs): 
+    print(f"POST for {url}")     
+    try:  
+        response=requests.post(url, params=kwargs, json=json_payload)
+    except: 
+        print("Network exception occurred")    
+    status_code=response.status_code
+    print(f"With status {status_code}")
+    json_data= json.loads(response.text)
+    return json_data   
+    
 
 # Create a get_dealers_from_cf method to get dealers from a cloud function
 # def get_dealers_from_cf(url, **kwargs):
@@ -104,22 +102,12 @@ def analyze_review_sentiments(text):
     nlu = NaturalLanguageUnderstandingV1(version='2021-08-01',authenticator=authenticator) 
     nlu.set_service_url(url) 
     response = nlu.analyze( text=text, language="en", features=Features(sentiment=SentimentOptions(targets=[text]))).get_result() 
-
     label=json.dumps(response, indent=2) 
-    label = response['sentiment']['document']['label'] 
-    
-    
-
+    label = response['sentiment']['document']['label']   
     #label = get_request(url,params=params,api_key=apikey)
-    
     print(f"ANALYSIS SAYS: {label}")
     return label
 
-#   response = requests.get(url, params=params, headers={'Content-Type': 'application/json'},
-#                                     auth=HTTPBasicAuth('apikey', api_key))
-
-
-# - Get the returned sentiment label such as Positive or Negative
 
 
 
