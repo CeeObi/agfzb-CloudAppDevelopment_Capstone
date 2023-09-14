@@ -5,38 +5,31 @@ Returns:
 """
 from cloudant.client import Cloudant
 from cloudant.error import CloudantException
-
-import json
-from ibmcloudant.cloudant_v1 import CloudantV1
-
 import requests
 
 
-client = CloudantV1.new_instance()
+def main(param_dict):
+    """Main Function
 
+    Args:
+        param_dict (Dict): input paramater
 
-# def main(param_dict):
-#     """Main Function
+    Returns:
+        _type_: _description_ TODO
+    """
 
-#     Args:
-#         param_dict (Dict): input paramater
+    try:
+        client = Cloudant.iam(
+            account_name=param_dict["COUCH_USERNAME"],
+            api_key=param_dict["IAM_API_KEY"],
+            connect=True,
+        )
+        print(f"Databases: {client.all_dbs()}")
+    except CloudantException as cloudant_exception:
+        print("unable to connect")
+        return {"error": cloudant_exception}
+    except (requests.exceptions.RequestException, ConnectionResetError) as err:
+        print("connection error")
+        return {"error": err}
 
-#     Returns:
-#         _type_: _description_ TODO
-#     """
-
-#     try:
-#         client = Cloudant.iam(
-#             account_name=param_dict["COUCH_USERNAME"],
-#             api_key=param_dict["IAM_API_KEY"],
-#             connect=True,
-#         )
-#         print(f"Databases: {client.all_dbs()}")
-#     except CloudantException as cloudant_exception:
-#         print("unable to connect")
-#         return {"error": cloudant_exception}
-#     except (requests.exceptions.RequestException, ConnectionResetError) as err:
-#         print("connection error")
-#         return {"error": err}
-
-#     return {"dbs": client.all_dbs()}
+    return {"dbs": client.all_dbs()}
