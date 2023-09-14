@@ -56,12 +56,15 @@ def registration_request(request):
 # Update the `get_dealerships` view to render the index page with a list of dealerships
 def get_dealerships(request):
     context = {}
-    if request.method == "GET":
-        url = "https://chukwudimaco-3000.theiadocker-0-labs-prod-theiak8s-4-tor01.proxy.cognitiveclass.ai/dealerships/get"
+    if request.method == "GET":        
+        url = "https://chukwudimaco-3000.theiadocker-2-labs-prod-theiak8s-4-tor01.proxy.cognitiveclass.ai/dealerships/get"
              #"https://93eb5943-e1b4-4320-999c-3ceada222bee-bluemix.cloudantnosqldb.appdomain.cloud"
+             #https://chukwudimaco-3000.theiadocker-2-labs-prod-theiak8s-4-tor01.proxy.cognitiveclass.ai/dealerships/get
         
         # Get dealers from the URL
         dealerships = get_dealers_from_cf(url)
+        print("GREATESTNONE")
+        
         # Concat all dealer's short name
         dealer_names = '=>'.join([dealer.short_name for dealer in dealerships])
         # Return a list of dealer short name
@@ -74,15 +77,17 @@ def get_dealerships(request):
 def get_dealer_details(request, dealer_id):
     context = {}
     if request.method == "GET":
-        url = "https://chukwudimaco-5000.theiadocker-0-labs-prod-theiak8s-4-tor01.proxy.cognitiveclass.ai/api/get_reviews"
+        url = "https://chukwudimaco-5000.theiadocker-2-labs-prod-theiak8s-4-tor01.proxy.cognitiveclass.ai/api/get_reviews"
+        
         #?id=15"
-                     
+                           
         # Get dealers from the URL
         reviews = get_dealer_reviews_from_cf(url, dealerId=dealer_id)
         # Concat all dealer's short name
-        dealer_names = '=>'.join([review.name for review in reviews])
+        dealer_names = ', '.join([review.name for review in reviews])
+        reviewers_sentiment = ', '.join([sentiments.sentiment for sentiments in reviews])
         # Return a list of dealer short name
-        return HttpResponse(dealer_names)
+        return HttpResponse(f"<b>Reviewer names:</b> {dealer_names} <br><br> <b>Reviewers respective Sentiments:</b> {reviewers_sentiment}")
     return render(request, 'djangoapp/index.html', context)
 
 
