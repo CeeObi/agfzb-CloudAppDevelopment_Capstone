@@ -50,8 +50,9 @@ app.get('/dealerships/get', (req, res) => {
         if (err) {
             console.error('Error fetching dealerships:', err);
             res.status(500).json({ error: 'An error occurred while fetching dealerships.' });
-        } else {
+        } else {            
             const dealerships = body.docs;
+            console.log(dealerships)
             res.json(dealerships);
         }
     });
