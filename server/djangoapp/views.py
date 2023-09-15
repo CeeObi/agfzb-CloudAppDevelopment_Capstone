@@ -3,7 +3,7 @@ from django.http import HttpResponseRedirect, HttpResponse
 from django.contrib.auth.models import User
 from django.shortcuts import get_object_or_404, render, redirect
 # from .models import related models
-from .restapis import get_dealers_from_cf, get_dealer_reviews_from_cf, post_request
+from .restapis import get_dealers_from_cf, get_dealer_reviews_from_cf, post_request,get_dealer_by_state_from_cf
 from django.contrib.auth import login, logout, authenticate
 from django.contrib import messages
 from datetime import datetime
@@ -71,16 +71,18 @@ def get_dealerships(request):
 
 
 # Create a `get_dealership by id` view to render the specific dealer
-def get_dealer_by_id(request, dealer_id):
+def get_dealer_by_state(request, dealer_state):
     context = {}
     if request.method == "GET":
         url = "https://chukwudimaco-3000.theiadocker-2-labs-prod-theiak8s-4-tor01.proxy.cognitiveclass.ai/dealerships/get"  
         # Get dealers from the URL
-        dealers = get_dealers_from_cf(url, dealerId=dealer_id)
+        dealers = get_dealer_by_state_from_cf(url, dealerState=dealer_state.title())
+        #************
         print(dealers)
         dealer_names = ', '.join([dealer.short_name for dealer in dealers])        
+        dealer_state = ', '.join([dealer.st for dealer in dealers])  
         # Return a dealer short name
-        return HttpResponse(f"<b>Dealer names:</b> {dealer_names} <br>")
+        return HttpResponse(f"<b>Dealer names:</b> {dealer_names} <br><br> <b>Dealers respective states:</b> {dealer_state}")
     return render(request, 'djangoapp/index.html', context)
     
 

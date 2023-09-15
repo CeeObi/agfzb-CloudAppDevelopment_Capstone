@@ -27,8 +27,8 @@ urlpatterns = [
     # path for landing page
     path(route='', view=views.get_dealerships, name='index'),
 
-    # path for getting specific dealer by ID
-    path(route='dealerid/<int:dealer_id>/', view=views.get_dealer_by_id, name='dealerbyID'),    
+    # path for getting specific dealer by STATE
+    path(route='dealerstate/<str:dealer_state>/', view=views.get_dealer_by_state, name='dealerbyState'),    
 
     # path for dealer reviews view
     path('dealer/<int:dealer_id>/', view=views.get_dealer_details, name='dealer_details'),
