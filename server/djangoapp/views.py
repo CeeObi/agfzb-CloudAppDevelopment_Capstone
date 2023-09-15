@@ -107,16 +107,15 @@ def get_dealer_details(request, dealer_id, dealer_name):
 
 
 # Create a `add_review` view to submit a review
-def add_review(request, dealer_id):
+def add_review(request, dealer_id, dealer_name):
     context = {}
     if request.method == "POST":
         url="https://chukwudimaco-5000.theiadocker-2-labs-prod-theiak8s-4-tor01.proxy.cognitiveclass.ai/api/post_review"
         # URL is subject to change for each new lab sessions.
         #if request.method=="POST":
         dealership_id=dealer_id   
-        
-        #if request.user.is_authenticated:
-        
+        dealers_name=dealer_name        
+        #if request.user.is_authenticated:        
         review = dict()
         review["_id"] = "29bbaee37aadb08c022c2016b"
         review["_rev"] = "1-6d3a316e140863cd"
@@ -132,6 +131,8 @@ def add_review(request, dealer_id):
         result = post_request(url,json_payload=review)    
         return HttpResponse(f"{result['message']}")    
     else:
+        context["id"]=dealer_id
+        context["name"]=dealer_name
         return render(request,'djangoapp/add_review.html', context)
 #NEED to obtain the values from the web page
 

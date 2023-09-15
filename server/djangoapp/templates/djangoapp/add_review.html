@@ -47,8 +47,10 @@
           <hr>
     <!--Add review form here -->
     {% if user.is_authenticated %}
-    <h1>Add a review about Dealer ID 15</h1>    
-    <form action="{% url 'djangoapp:add_review' dealer_id=15 %}" method="post">
+    <div class="container-fluid">
+        <h1>Add a review about {{name}}</h1>   <br> 
+    </div>
+    <form action="{% url 'djangoapp:add_review' dealer_id=id dealer_name=name %}" method="post">
         {% csrf_token %}
         <div class="container"> <!--Style root div with .container class -->
           <div class="form-group"> <!--Style second div with .form-group class -->
