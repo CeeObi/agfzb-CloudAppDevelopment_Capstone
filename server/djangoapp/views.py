@@ -62,12 +62,13 @@ def get_dealerships(request):
     if request.method == "GET":        
         url = "https://chukwudimaco-3000.theiadocker-2-labs-prod-theiak8s-4-tor01.proxy.cognitiveclass.ai/dealerships/get"            
         # Get dealers from the URL
-        dealerships = get_dealers_from_cf(url)
+        dealership_list = get_dealers_from_cf(url)
+        context["dealership_list"]=dealership_list        
         # Concat all dealer's short name
-        dealer_names = '=>'.join([dealer.short_name for dealer in dealerships])
+        #dealer_names = '=>'.join([dealer.short_name for dealer in dealerships])
         # Return a list of dealer short name
-        return HttpResponse(dealer_names)
-    return render(request, 'djangoapp/index.html', context)
+        #return HttpResponse(dealer_names)
+        return render(request, 'djangoapp/index.html', context)
 
 
 # Create a `get_dealership by id` view to render the specific dealer
@@ -94,12 +95,13 @@ def get_dealer_details(request, dealer_id):
         url = "https://chukwudimaco-5000.theiadocker-2-labs-prod-theiak8s-4-tor01.proxy.cognitiveclass.ai/api/get_reviews"                   
         # Get dealers review from the URL
         reviews = get_dealer_reviews_from_cf(url, dealerId=dealer_id)
-        # Concat all dealer's short name
+        context["reviews_list"]=reviews
+        print(context)
         dealer_names = ', '.join([review.name for review in reviews])
         reviewers_sentiment = ', '.join([sentiments.sentiment for sentiments in reviews])
         # Return a list of dealer short name
-        return HttpResponse(f"<b>Reviewer names:</b> {dealer_names} <br><br> <b>Reviewers respective Sentiments:</b> {reviewers_sentiment}")
-    return render(request, 'djangoapp/index.html', context)
+        #return HttpResponse(f"<b>Reviewer names:</b> {dealer_names} <br><br> <b>Reviewers respective Sentiments:</b> {reviewers_sentiment}")
+        return render(request, 'djangoapp/dealer_details.html', context)
 
 
 
