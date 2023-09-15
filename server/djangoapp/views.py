@@ -106,27 +106,31 @@ def get_dealer_details(request, dealer_id):
 
 # Create a `add_review` view to submit a review
 def add_review(request, dealer_id):
-    url="https://chukwudimaco-5000.theiadocker-2-labs-prod-theiak8s-4-tor01.proxy.cognitiveclass.ai/api/post_review"
-     # URL is subject to change for each new lab sessions.
-    #if request.method=="POST":
-    dealership_id=dealer_id    
-    
-    #if request.user.is_authenticated:
-    
-    review = dict()
-    review["_id"] = "29bbaee37aadb08c022c2016b"
-    review["_rev"] = "1-6d3a316e140863cd"
-    review["car_make"] = "CARRRS"
-    review["car_model"] = "WOOOOW"
-    review["car_year"] = 2010
-    review["dealership"] = dealership_id
-    review["id"]= 1
-    review["name"] = "Dims Obi"
-    review["purchase"] = True
-    review["purchase_date"]= f"{datetime.utcnow()}"
-    review["review"]  = "What an excellent and amazing service"
-    result = post_request(url,json_payload=review)    
-    return HttpResponse(f"{result['message']}")
+    context = {}
+    if request.method == "POST":
+        url="https://chukwudimaco-5000.theiadocker-2-labs-prod-theiak8s-4-tor01.proxy.cognitiveclass.ai/api/post_review"
+        # URL is subject to change for each new lab sessions.
+        #if request.method=="POST":
+        dealership_id=dealer_id   
+        
+        #if request.user.is_authenticated:
+        
+        review = dict()
+        review["_id"] = "29bbaee37aadb08c022c2016b"
+        review["_rev"] = "1-6d3a316e140863cd"
+        review["car_make"] = "CARRRS"
+        review["car_model"] = "WOOOOW"
+        review["car_year"] = 2010
+        review["dealership"] = dealership_id
+        review["id"]= 1
+        review["name"] = "Dims Obi"
+        review["purchase"] = True
+        review["purchase_date"]= f"{datetime.utcnow()}"
+        review["review"]  = "What an excellent and amazing service"
+        result = post_request(url,json_payload=review)    
+        return HttpResponse(f"{result['message']}")    
+    else:
+        return render(request,'djangoapp/add_review.html', context)
 #NEED to obtain the values from the web page
 
 
