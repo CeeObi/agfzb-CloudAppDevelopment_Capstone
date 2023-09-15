@@ -46,13 +46,14 @@
           </nav>          
           <hr>
     <!--Add review form here -->
+    {% if user.is_authenticated %}
     <h1>Add a review about Dealer ID 15</h1>    
     <form action="{% url 'djangoapp:add_review' dealer_id=15 %}" method="post">
         {% csrf_token %}
         <div class="container"> <!--Style root div with .container class -->
           <div class="form-group"> <!--Style second div with .form-group class -->
             <label for="content"><b>Enter the review content:</b></label>
-            <textarea class="form-control" id="content" name="content" rows="2" required></textarea>
+            <textarea class="form-control" id="content" name="content" rows="2" required></textarea> <br>
             <input class="form-check-input ml-1" type="checkbox" name="purchasecheck" id="purchasecheck">
             <p class="ml-4"> Has purchasd the car from {Dealeship ID}? <em class="text-black-50"> (select purchased car information below if checked)</em></p>   
             <label for="carmodel"><b>Select your car (model-make-year):</b></label>
@@ -67,19 +68,20 @@
             <input class="date-own form-control" type="text" name="purchasedate" id="purchasedate" style="width: 21rem;">
             <input class="mt-2 btn btn-primary me-2" type="submit" value="Submit">
           </div>
+
+          
           {% if message %}
             <div class="alert alert-warning"> <!--Style the message paragraph with .alert and .alert-warning class -->
               {{ message }}
             </div>
-          {% endif %}            
-          
-         
+          {% endif %}
         </div>
       </form>
-
-
-
-
+      {% else %}       
+      <div class="alert alert-info" role="alert">
+        <h3> Please sign in to add a review! </h3>
+      </div>
+      {% endif %}  
     
     </body>
     <script type="text/javascript">

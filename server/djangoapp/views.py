@@ -60,7 +60,7 @@ def registration_request(request):
 def get_dealerships(request):
     context = {}
     if request.method == "GET":        
-        url = "https://chukwudimaco-3000.theiadocker-2-labs-prod-theiak8s-4-tor01.proxy.cognitiveclass.ai/dealerships/get"            
+        url = "https://chukwudimaco-3000.theiadocker-1-labs-prod-theiak8s-4-tor01.proxy.cognitiveclass.ai/dealerships/get"
         # Get dealers from the URL
         dealership_list = get_dealers_from_cf(url)
         context["dealership_list"]=dealership_list        
@@ -75,7 +75,7 @@ def get_dealerships(request):
 def get_dealer_by_state(request, dealer_state):
     context = {}
     if request.method == "GET":
-        url = "https://chukwudimaco-3000.theiadocker-2-labs-prod-theiak8s-4-tor01.proxy.cognitiveclass.ai/dealerships/get"  
+        url = "https://chukwudimaco-3000.theiadocker-1-labs-prod-theiak8s-4-tor01.proxy.cognitiveclass.ai/dealerships/get"
         # Get dealers from the URL
         dealers = get_dealer_by_state_from_cf(url, dealerState=dealer_state.title())
         #************
@@ -89,15 +89,17 @@ def get_dealer_by_state(request, dealer_state):
 
 
 # Create a `get_dealer_details` view to render the reviews of a dealer
-def get_dealer_details(request, dealer_id):
+def get_dealer_details(request, dealer_id, dealer_name):
     context = {}
     if request.method == "GET":
-        url = "https://chukwudimaco-5000.theiadocker-2-labs-prod-theiak8s-4-tor01.proxy.cognitiveclass.ai/api/get_reviews"                   
+        url = "https://chukwudimaco-5000.theiadocker-1-labs-prod-theiak8s-4-tor01.proxy.cognitiveclass.ai/api/get_reviews"
         # Get dealers review from the URL
         reviews = get_dealer_reviews_from_cf(url, dealerId=dealer_id)
         context["reviews_list"]=reviews
-        dealer_names = ', '.join([review.name for review in reviews])
-        reviewers_sentiment = ', '.join([sentiments.sentiment for sentiments in reviews])
+        context["id"]=dealer_id
+        context["name"]=dealer_name
+        # dealer_names = ', '.join([review.name for review in reviews])
+        # reviewers_sentiment = ', '.join([sentiments.sentiment for sentiments in reviews])
         # Return a list of dealer short name
         #return HttpResponse(f"<b>Reviewer names:</b> {dealer_names} <br><br> <b>Reviewers respective Sentiments:</b> {reviewers_sentiment}")
         return render(request, 'djangoapp/dealer_details.html', context)

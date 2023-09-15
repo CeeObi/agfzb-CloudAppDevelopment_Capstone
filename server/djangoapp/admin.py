@@ -2,6 +2,7 @@ from django.contrib import admin
 from .models import CarMake, CarModel
 
 
+
 # Register your models here.
 admin.site.register(CarModel)
 
@@ -9,7 +10,7 @@ admin.site.register(CarModel)
 # CarModelInline class
 class CarModelInline(admin.StackedInline):
     model = CarModel
-    extra = 2
+    extra = 0
 
 # CarModelAdmin class
 # class CarModelAdmin(admin.ModelAdmin):

@@ -48,10 +48,10 @@
     <div class="container">
     <h1>
     Dealer Reviews
-    {% if user.is_authenticated %}
-    <a class="btn btn-outline-info" href="{% url 'djangoapp:add_review' dealer_id=15 %}">Add Review</a> 
+    {% if user.is_authenticated %}    
+    <a class="btn btn-outline-info" href="{% url 'djangoapp:add_review' dealer_id=id %}">Add Review</a> 
     {% endif %}
-<!-- <a class="btn btn-outline-info" href="http://">Add Review</a>  -->
+<!-- <a class="btn btn-outline-info" href="http://">Add Review</a>. dealer_id=id above: the 'id' is from context. See views.py -->
     </h1>
     <div class="row row-cols-1 row-cols-md-3 g-4 ">
     {% for reviews in reviews_list %}    
