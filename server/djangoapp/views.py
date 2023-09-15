@@ -71,7 +71,7 @@ def get_dealerships(request):
         return render(request, 'djangoapp/index.html', context)
 
 
-# Create a `get_dealership by id` view to render the specific dealer
+# Create a `get_dealership by state` view to render the specific dealer
 def get_dealer_by_state(request, dealer_state):
     context = {}
     if request.method == "GET":
@@ -96,7 +96,6 @@ def get_dealer_details(request, dealer_id):
         # Get dealers review from the URL
         reviews = get_dealer_reviews_from_cf(url, dealerId=dealer_id)
         context["reviews_list"]=reviews
-        print(context)
         dealer_names = ', '.join([review.name for review in reviews])
         reviewers_sentiment = ', '.join([sentiments.sentiment for sentiments in reviews])
         # Return a list of dealer short name

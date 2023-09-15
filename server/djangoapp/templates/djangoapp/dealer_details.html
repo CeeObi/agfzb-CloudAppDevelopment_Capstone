@@ -45,10 +45,37 @@
       </nav>          
       <hr>
     <!-- Add reviews as cards -->
-    {% for reviews in reviews_list %}
-    {{reviews.name}}
-    
+    <div class="container">
+    <h1>
+    Dealer Reviews
+    {% if user.is_authenticated %}
+    <a class="btn btn-outline-info" href="http://">Add Review</a> 
+    {% endif %}
+<!-- <a class="btn btn-outline-info" href="http://">Add Review</a>  -->
+    </h1>
+    <div class="row row-cols-1 row-cols-md-3 g-4 ">
+    {% for reviews in reviews_list %}    
+        <div class="col card-group">
+          <div class="card my-2" style="width: 21rem;">
+            <div class="card-header">
+            {% if reviews.sentiment == "positive" %}
+            <img src="{{MEDIA_URL}}/emoji/positive.png" alt="" style="width: 3rem;">
+            {% else %}
+              {% if reviews.sentiment == "neutral" %}
+              <img src="{{MEDIA_URL}}/emoji/neutral.png" alt="" style="width: 3rem;">
+              {% else %}
+              <img src="{{MEDIA_URL}}/emoji/negative.png" alt="" style="width: 3rem;">
+            {% endif %}
+            {% endif %}   </div>
+            <div class="card-body ">
+              <h3 class="card-title">{{reviews.name}}</h3>
+              <h6 class="card-title">{{reviews.car_make}}, {{reviews.car_model}} <br>{{reviews.car_year}} </h6>              
+              <p class="card-text text-center"><i>"{{reviews.review}}."</i></p>              
+            </div>
+          </div>
+        </div>  
     {% endfor %}
+    </div>  
 
     </body>
 
