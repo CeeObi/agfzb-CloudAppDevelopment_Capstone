@@ -110,26 +110,37 @@ def get_dealer_details(request, dealer_id, dealer_name):
 def add_review(request, dealer_id, dealer_name):
     context = {}
     if request.method == "POST":
-        url="https://chukwudimaco-5000.theiadocker-2-labs-prod-theiak8s-4-tor01.proxy.cognitiveclass.ai/api/post_review"
+        url="https://chukwudimaco-5000.theiadocker-1-labs-prod-theiak8s-4-tor01.proxy.cognitiveclass.ai/api/post_review"
         # URL is subject to change for each new lab sessions.
         #if request.method=="POST":
+        firstname = request.POST['firstname']
+        car = request.POST['car'].split("-")
+        car_model=car[0]
+        car_make=car[1]
+        car_year=car[2]        
+        purchasedate = request.POST['purchasedate']
+        purchasecheck = request.POST['purchasecheck']
+        content = request.POST['content']
         dealership_id=dealer_id   
-        dealers_name=dealer_name        
+        dealers_name=dealer_name  
+        print(dealers_name)      
         #if request.user.is_authenticated:        
-        review = dict()
-        review["_id"] = "29bbaee37aadb08c022c2016b"
-        review["_rev"] = "1-6d3a316e140863cd"
-        review["car_make"] = "CARRRS"
-        review["car_model"] = "WOOOOW"
-        review["car_year"] = 2010
+        review = {}
+        # review["_id"] = "29bbaee37aadb08c022c2016b"
+        # review["_rev"] = "1-6d3a316e140863cd"
+        review["car_make"] = car_make
+        review["car_model"] = car_model
+        review["car_year"] = car_year
         review["dealership"] = dealership_id
-        review["id"]= 1
-        review["name"] = "Dims Obi"
-        review["purchase"] = True
-        review["purchase_date"]= f"{datetime.utcnow()}"
-        review["review"]  = "What an excellent and amazing service"
-        result = post_request(url,json_payload=review)    
-        return HttpResponse(f"{result['message']}")    
+        review["dealer_name"]= dealers_name
+        review["reviewer_fname"] = firstname
+        review["purchase"] = purchasecheck
+        review["purchase_date"]= purchasedate
+        review["review"]  = content
+        review["review_time"] = f"{datetime.utcnow()}"
+        #result = post_request(url,json_payload=review)    
+        return HttpResponse(review["dealer_name"])   
+#        return HttpResponse(f"{result['message']}")    
     else:
         context["id"]=dealer_id
         context["name"]=dealer_name

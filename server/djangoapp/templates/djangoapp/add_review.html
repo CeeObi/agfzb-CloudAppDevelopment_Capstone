@@ -54,13 +54,15 @@
         {% csrf_token %}
         <div class="container"> <!--Style root div with .container class -->
           <div class="form-group"> <!--Style second div with .form-group class -->
+            <label for="firstname"><b>First Name</b></label>
+            <input id="firstname" class = "form-control" type="text" placeholder="Enter First Name: " name="firstname" required> <br> <!--Style input with .form-control class -->
             <label for="content"><b>Enter the review content:</b></label>
             <textarea class="form-control" id="content" name="content" rows="2" required></textarea> <br>
             <input class="form-check-input ml-1" type="checkbox" name="purchasecheck" id="purchasecheck">
             <p class="ml-4"> Has purchasd the car from {Dealeship ID}? <em class="text-black-50"> (select purchased car information below if checked)</em></p>   
             <label for="carmodel"><b>Select your car (model-make-year):</b></label>
             <select name="car" id="car" class="form-select" required>
-                <option value="toyota">Camry-Toyota-2016</option>
+                <option value="Camry-Toyota-2016">Camry-Toyota-2016</option>
                 <option value="holden">Commodore-Holden-2009</option>
                 <option value="mercedes">E650-Mercedes-2021</option>
                 <option value="audi">A6-Audi-2020</option>
