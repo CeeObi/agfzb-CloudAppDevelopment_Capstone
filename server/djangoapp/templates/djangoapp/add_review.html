@@ -54,8 +54,8 @@
         {% csrf_token %}
         <div class="container"> <!--Style root div with .container class -->
           <div class="form-group"> <!--Style second div with .form-group class -->
-            <label for="firstname"><b>First Name</b></label>
-            <input id="firstname" class = "form-control" type="text" placeholder="Enter First Name: " name="firstname" required> <br> <!--Style input with .form-control class -->
+            <label for="fullname"><b>Full Name</b></label>
+            <input id="fullname" class = "form-control" type="text" placeholder="Enter Full Name: " name="fullname" required> <br> <!--Style input with .form-control class -->
             <label for="content"><b>Enter the review content:</b></label>
             <textarea class="form-control" id="content" name="content" rows="2" required></textarea> <br>
             <input class="form-check-input ml-1" type="checkbox" name="purchasecheck" id="purchasecheck">
@@ -63,7 +63,7 @@
             <label for="carmodel"><b>Select your car (model-make-year):</b></label>
             <select name="car" id="car" class="form-select" required>
                 <option value="Camry-Toyota-2016">Camry-Toyota-2016</option>
-                <option value="holden">Commodore-Holden-2009</option>
+                <option value="Commodore-Holden-2009">Commodore-Holden-2009</option>
                 <option value="mercedes">E650-Mercedes-2021</option>
                 <option value="audi">A6-Audi-2020</option>
             </select>
@@ -71,9 +71,7 @@
             <label for="carmodel"><b>Select your purchase date:</b></label>
             <input class="date-own form-control" type="text" name="purchasedate" id="purchasedate" style="width: 21rem;">
             <input class="mt-2 btn btn-primary me-2" type="submit" value="Submit">
-          </div>
-
-          
+          </div>          
           {% if message %}
             <div class="alert alert-warning"> <!--Style the message paragraph with .alert and .alert-warning class -->
               {{ message }}

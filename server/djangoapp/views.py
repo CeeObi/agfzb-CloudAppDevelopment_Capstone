@@ -6,10 +6,12 @@ from django.shortcuts import get_object_or_404, render, redirect
 from .restapis import get_dealers_from_cf, get_dealer_reviews_from_cf, post_request,get_dealer_by_state_from_cf
 from django.contrib.auth import login, logout, authenticate
 from django.contrib import messages
+from random import *
 from datetime import datetime
 import logging
 import json
 
+REVIEWER_ID=0
 # Get an instance of a logger
 logger = logging.getLogger(__name__)
 
@@ -105,47 +107,53 @@ def get_dealer_details(request, dealer_id, dealer_name):
         return render(request, 'djangoapp/dealer_details.html', context)
 
 
-
 # Create a `add_review` view to submit a review
 def add_review(request, dealer_id, dealer_name):
-    context = {}
+    context = {}    
     if request.method == "POST":
+        global REVIEWER_ID
+        REVIEWER_ID += 1
         url="https://chukwudimaco-5000.theiadocker-1-labs-prod-theiak8s-4-tor01.proxy.cognitiveclass.ai/api/post_review"
         # URL is subject to change for each new lab sessions.
         #if request.method=="POST":
-        firstname = request.POST['firstname']
-        car = request.POST['car'].split("-")
+        fullname = request.POST['fullname']
+        car = request.POST['car'].split("-")        
         car_model=car[0]
         car_make=car[1]
         car_year=car[2]        
         purchasedate = request.POST['purchasedate']
-        purchasecheck = request.POST['purchasecheck']
+        try:
+            purchasecheck = request.POST['purchasecheck']
+            purchasecheck = "True"
+        except:
+            purchasecheck = "False"
         content = request.POST['content']
         dealership_id=dealer_id   
-        dealers_name=dealer_name  
-        print(dealers_name)      
-        #if request.user.is_authenticated:        
+        dealers_name=dealer_name 
         review = {}
-        # review["_id"] = "29bbaee37aadb08c022c2016b"
-        # review["_rev"] = "1-6d3a316e140863cd"
+        review["_id"] = f"{randint(1,(10**25))}"
+        review["_rev"] = f"{randint(1,(10**25))}"
+        #Still need to query admin site for car make
         review["car_make"] = car_make
         review["car_model"] = car_model
         review["car_year"] = car_year
         review["dealership"] = dealership_id
-        review["dealer_name"]= dealers_name
-        review["reviewer_fname"] = firstname
+        review["id"] = REVIEWER_ID
+        review["name"] = fullname        
         review["purchase"] = purchasecheck
         review["purchase_date"]= purchasedate
         review["review"]  = content
         review["review_time"] = f"{datetime.utcnow()}"
-        #result = post_request(url,json_payload=review)    
-        return HttpResponse(review["dealer_name"])   
-#        return HttpResponse(f"{result['message']}")    
+        review["dealer_name"] = dealers_name       
+        result = post_request(url,json_payload=review)   
+        print(result) 
+        #return HttpResponse(review)   
+        return redirect("djangoapp:dealer_details", dealer_id=dealership_id,dealer_name=dealer_name)
     else:
         context["id"]=dealer_id
         context["name"]=dealer_name
         return render(request,'djangoapp/add_review.html', context)
-#NEED to obtain the values from the web page
+
 
 
 

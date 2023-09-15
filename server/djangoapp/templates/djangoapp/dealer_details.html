@@ -45,14 +45,16 @@
       </nav>          
       <hr>
     <!-- Add reviews as cards -->
-    <div class="container">
+    <div class="container-fluid">
     <h1>
-    Dealer Reviews
+    Dealer Reviews for {{name}}
     {% if user.is_authenticated %}    
     <a class="btn btn-outline-info" href="{% url 'djangoapp:add_review' dealer_id=id dealer_name=name %}">Add Review</a> 
     {% endif %}
 <!-- <a class="btn btn-outline-info" href="http://">Add Review</a>. dealer_id=id above: the 'id' is from context. See views.py -->
     </h1>
+    </div>
+    <div class="container">
     <div class="row row-cols-1 row-cols-md-3 g-4 ">
     {% for reviews in reviews_list %}    
         <div class="col card-group">

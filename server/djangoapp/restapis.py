@@ -23,8 +23,8 @@ def get_request(url,**kwargs):
 # Create a `post_request` to make HTTP POST requests
 # e.g., response = requests.post(url, params=kwargs, json=payload)
 def post_request(url,json_payload,**kwargs):     
-    print(f"POST for {url}")  
-    try:  
+    print(f"POST for {url}")      
+    try: 
         response=requests.post(url, json=json_payload, params=kwargs)
     except: 
         print("Network exception occurred")    
@@ -115,16 +115,14 @@ def analyze_review_sentiments(text):
     # params["text"] = text #kwargs["text"]
     # params["version"] = "2022-04-07"#kwargs["version"]
     # params["features"] = {"sentiment": {},"keywords": { "emotion": True}}# kwargs["features"]
-    # # params["return_analyzed_text"] = kwargs["return_analyzed_text"]
-    print(f"LANGUAGE SAYS: {text}")
+    # # params["return_analyzed_text"] = kwargs["return_analyzed_text"]    
     authenticator = IAMAuthenticator(api_key) 
     nlu = NaturalLanguageUnderstandingV1(version='2021-08-01',authenticator=authenticator) 
     nlu.set_service_url(url) 
     response = nlu.analyze( text=text, language="en", features=Features(sentiment=SentimentOptions(targets=[text]))).get_result() 
     label=json.dumps(response, indent=2) 
     label = response['sentiment']['document']['label']   
-    #label = get_request(url,params=params,api_key=apikey)
-    print(f"ANALYSIS SAYS: {label}")
+    #label = get_request(url,params=params,api_key=apikey)    
     return label
 
 
