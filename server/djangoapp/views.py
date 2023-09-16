@@ -2,7 +2,7 @@ from django.shortcuts import render
 from django.http import HttpResponseRedirect, HttpResponse
 from django.contrib.auth.models import User
 from django.shortcuts import get_object_or_404, render, redirect
-from .models import CarMake,CarDealer,CarModel
+from .models import CarMake,CarDealer,CarModel,DealerCarInventory
 from .restapis import get_dealers_from_cf, get_dealer_reviews_from_cf, post_request,get_dealer_by_state_from_cf
 from django.contrib.auth import login, logout, authenticate
 from django.contrib import messages
@@ -30,6 +30,9 @@ def get_car_collections():
                 car_collections[car_make_name].append(each_car_model)
     return car_collections
 
+   
+
+
 def get_cars_by_dealer_id(dealer_id):
     dealer_id=dealer_id
     all_car_collections=get_car_collections()    
@@ -38,9 +41,11 @@ def get_cars_by_dealer_id(dealer_id):
         make_of_car=all_car_collections[makes]    
         for indxs in range(0,len(make_of_car)):            
             all_models = make_of_car[indxs]      
-            all_models["mod-mak-yr"] = f"{all_models['name']}-{makes}-{all_models['year'].strftime('%Y')}"
-            if all_models["dealer_id"] == dealer_id:                
-                all_dealer_makes_availabe.append(all_models)    
+            all_models["mod_mak_yr"] = f"{all_models['name']}-{makes}-{all_models['year'].strftime('%Y')}"
+            if all_models["dealer_id"] == dealer_id:   
+                add_to_car_inventory = DealerCarInventory(id=all_models["id"] , dealer_id=all_models["dealer_id"], name=all_models["name"], model_id=all_models["model_id"], bodytype=all_models["bodytype"], year=all_models["year"], mod_mak_yr=all_models["mod_mak_yr"])
+                print(add_to_car_inventory)
+                all_dealer_makes_availabe.append(add_to_car_inventory)    
     return all_dealer_makes_availabe
 #########End of Queries to django Database    
             
@@ -172,17 +177,14 @@ def add_review(request, dealer_id, dealer_name):
         review["review"]  = content
         review["review_time"] = f"{datetime.utcnow()}"
         review["dealer_name"] = dealers_name       
-        result = post_request(url,json_payload=review)   
-        print(result) 
+        result = post_request(url,json_payload=review)           
         #return HttpResponse(review)   
         return redirect("djangoapp:dealer_details", dealer_id=dealership_id,dealer_name=dealer_name)
     else:
         dealercars_by_id=get_cars_by_dealer_id(dealer_id)  
         context["id"]=dealer_id
         context["name"]=dealer_name
-        context["models_to_sell"]=dealercars_by_id
-        
-        print(context)
-        
-        #return HttpResponse("YES")#context["models_to_sell"])
+        context["models_to_sell"]=dealercars_by_id 
         return render(request,'djangoapp/add_review.html', context)
+
+

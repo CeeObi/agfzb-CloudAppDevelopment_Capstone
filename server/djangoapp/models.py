@@ -80,3 +80,18 @@ class DealerReview():
         self.id = id
     def __str__(self):
         return "Review name: " + self.name
+
+
+
+#Created a CarDearler Inventory object model
+class DealerCarInventory():
+    def __init__(self, id ,dealer_id, name, model_id, bodytype, year, mod_mak_yr):
+        self.id = id
+        self.dealer_id = dealer_id
+        self.name = name
+        self.model_id = model_id
+        self.bodytype = bodytype
+        self.year = year
+        self.mod_mak_yr = mod_mak_yr
+    def __str__(self):
+        return "Inventory created"

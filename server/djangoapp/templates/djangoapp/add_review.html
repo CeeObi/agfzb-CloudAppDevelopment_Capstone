@@ -62,16 +62,10 @@
             <p class="ml-4"> Has purchasd the car from {Dealeship ID}? <em class="text-black-50"> (select purchased car information below if checked)</em></p>   
             <label for="carmodel"><b>Select your car (model-make-year):</b></label>
             <select name="car" id="car" class="form-select" required>
-                    
-
-            {% for carmodel in models_to_sell %}    
-
-                <option value="Camry-Toyota-2016"> carmodel['mod-mak-yr'] </option>                
-            
-            {% endfor %}               
-                
-            </select>
-                <br>
+            {% for carmodel in models_to_sell %}   
+                <option value={{carmodel.mod_mak_yr}}>{{carmodel.mod_mak_yr}}</option>                
+            {% endfor %}              
+            </select>  <br>
             <label for="carmodel"><b>Select your purchase date:</b></label>
             <input class="date-own form-control" type="text" name="purchasedate" id="purchasedate" style="width: 21rem;">
             <input class="mt-2 btn btn-primary me-2" type="submit" value="Submit">
