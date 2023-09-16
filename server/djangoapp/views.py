@@ -16,8 +16,7 @@ REVIEWER_ID=0
 logger = logging.getLogger(__name__)
 
 
-# Create your views here.
-#Queries the django admin database to collect carmake and carmodel information
+#######Queries the django admin database to collect carmake and carmodel information
 def get_car_collections():
     car_models = list(CarModel.objects.all().values().order_by('name'))
     car_makes = list(CarMake.objects.all().values().order_by('name'))
@@ -30,8 +29,21 @@ def get_car_collections():
             if each_car_id == each_car_model["model_id"]:              
                 car_collections[car_make_name].append(each_car_model)
     return car_collections
+    
+def get_cars_by_dealer_id(dealer_id):
+    all_car_collections=get_car_collections()
+    dealer_id_check=dealer_id
+    all_dealer_makes = []
+    for makes in all_car_collections:
+        make_of_car=all_car_collections[makes]
+        for indxs in range(0,len(make_of_car)):
+            all_makes = make_of_car[indxs]
+            if all_makes["dealer_id"] == dealer_id_check:                
+                all_dealer_makes.append(all_makes)
+    return all_dealer_makes
+#########End of Queries to django Database    
             
-
+# Create your views here.
 # Create an `about` view to render a static about page
 def about(request):
     if request.method == "GET":
@@ -169,6 +181,7 @@ def add_review(request, dealer_id, dealer_name):
         return render(request,'djangoapp/add_review.html', context)
 
 
-            
-all_car_collctions=get_car_collections()
-print(all_car_collctions)
+    
+
+result=get_cars_by_dealer_id(1)
+print(result)
