@@ -62,10 +62,14 @@
             <p class="ml-4"> Has purchasd the car from {Dealeship ID}? <em class="text-black-50"> (select purchased car information below if checked)</em></p>   
             <label for="carmodel"><b>Select your car (model-make-year):</b></label>
             <select name="car" id="car" class="form-select" required>
-                <option value="Camry-Toyota-2016">Camry-Toyota-2016</option>
-                <option value="Commodore-Holden-2009">Commodore-Holden-2009</option>
-                <option value="mercedes">E650-Mercedes-2021</option>
-                <option value="audi">A6-Audi-2020</option>
+                    
+
+            {% for carmodel in models_to_sell %}    
+
+                <option value="Camry-Toyota-2016"> carmodel['mod-mak-yr'] </option>                
+            
+            {% endfor %}               
+                
             </select>
                 <br>
             <label for="carmodel"><b>Select your purchase date:</b></label>

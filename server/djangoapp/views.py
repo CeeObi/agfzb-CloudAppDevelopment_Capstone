@@ -25,9 +25,7 @@ def get_car_collections():
         each_car_id = each_car_make["id"]
         car_make_name = each_car_make["name"]    
         car_collections[car_make_name] = []
-        for each_car_model in car_models:        
-            # print(each_car_model)
-            # print(car_make_name)            
+        for each_car_model in car_models:                    
             if each_car_id == each_car_model["model_id"]:              
                 car_collections[car_make_name].append(each_car_model)
     return car_collections
@@ -40,7 +38,7 @@ def get_cars_by_dealer_id(dealer_id):
         make_of_car=all_car_collections[makes]    
         for indxs in range(0,len(make_of_car)):            
             all_models = make_of_car[indxs]      
-            all_models["car_make"] = makes
+            all_models["mod-mak-yr"] = f"{all_models['name']}-{makes}-{all_models['year'].strftime('%Y')}"
             if all_models["dealer_id"] == dealer_id:                
                 all_dealer_makes_availabe.append(all_models)    
     return all_dealer_makes_availabe
@@ -179,21 +177,12 @@ def add_review(request, dealer_id, dealer_name):
         #return HttpResponse(review)   
         return redirect("djangoapp:dealer_details", dealer_id=dealership_id,dealer_name=dealer_name)
     else:
+        dealercars_by_id=get_cars_by_dealer_id(dealer_id)  
         context["id"]=dealer_id
         context["name"]=dealer_name
+        context["models_to_sell"]=dealercars_by_id
+        
+        print(context)
+        
+        #return HttpResponse("YES")#context["models_to_sell"])
         return render(request,'djangoapp/add_review.html', context)
-
-
-    
-
-result=get_cars_by_dealer_id(2)
-# print(len(result))
-# print("____________")
-print(result)
-
-# for key in result:
-#     print(key)
-#     print(result[key])
-    
-
-
