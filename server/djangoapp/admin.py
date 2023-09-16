@@ -4,7 +4,7 @@ from .models import CarMake, CarModel
 
 
 # Register your models here.
-admin.site.register(CarModel)
+
 
 
 # CarModelInline class
@@ -24,3 +24,4 @@ class CarMakeAdmin(admin.ModelAdmin):
 
 # Register models here
 admin.site.register(CarMake, CarMakeAdmin)
+admin.site.register(CarModel)

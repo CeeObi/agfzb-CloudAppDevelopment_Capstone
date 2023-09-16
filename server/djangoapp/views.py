@@ -2,7 +2,7 @@ from django.shortcuts import render
 from django.http import HttpResponseRedirect, HttpResponse
 from django.contrib.auth.models import User
 from django.shortcuts import get_object_or_404, render, redirect
-# from .models import related models
+from .models import CarMake,CarDealer,CarModel
 from .restapis import get_dealers_from_cf, get_dealer_reviews_from_cf, post_request,get_dealer_by_state_from_cf
 from django.contrib.auth import login, logout, authenticate
 from django.contrib import messages
@@ -17,6 +17,20 @@ logger = logging.getLogger(__name__)
 
 
 # Create your views here.
+#Queries the django admin database to collect carmake and carmodel information
+def get_car_collections():
+    car_models = list(CarModel.objects.all().values().order_by('name'))
+    car_makes = list(CarMake.objects.all().values().order_by('name'))
+    car_collections={}
+    for each_car_make in car_makes:
+        each_car_id = each_car_make["id"]
+        car_make_name = each_car_make["name"]    
+        car_collections[car_make_name] = []
+        for each_car_model in car_models:        
+            if each_car_id == each_car_model["model_id"]:              
+                car_collections[car_make_name].append(each_car_model)
+    return car_collections
+            
 
 # Create an `about` view to render a static about page
 def about(request):
@@ -155,5 +169,6 @@ def add_review(request, dealer_id, dealer_name):
         return render(request,'djangoapp/add_review.html', context)
 
 
-
-
+            
+all_car_collctions=get_car_collections()
+print(all_car_collctions)
