@@ -81,7 +81,6 @@ def get_dealer_reviews_from_cf(url, **kwargs):
     return results
 
 
-
 def get_dealer_by_state_from_cf(url, dealerState):
     results = []
     json_result = get_request(url,state=dealerState)
@@ -110,19 +109,13 @@ def get_dealer_by_state_from_cf(url, dealerState):
 def analyze_review_sentiments(text):
 # - Call get_request() with specified arguments
     url="https://api.au-syd.natural-language-understanding.watson.cloud.ibm.com/instances/e0e38ebd-6770-4fee-b7da-36fa1ecb1072"
-    api_key="672NiaCf3cNKAkwlLskiuuTAwjbgcY_XZjU7nloPd8RX"    
-    # params = dict()
-    # params["text"] = text #kwargs["text"]
-    # params["version"] = "2022-04-07"#kwargs["version"]
-    # params["features"] = {"sentiment": {},"keywords": { "emotion": True}}# kwargs["features"]
-    # # params["return_analyzed_text"] = kwargs["return_analyzed_text"]    
+    api_key="672NiaCf3cNKAkwlLskiuuTAwjbgcY_XZjU7nloPd8RX"      
     authenticator = IAMAuthenticator(api_key) 
     nlu = NaturalLanguageUnderstandingV1(version='2021-08-01',authenticator=authenticator) 
     nlu.set_service_url(url) 
     response = nlu.analyze( text=text, language="en", features=Features(sentiment=SentimentOptions(targets=[text]))).get_result() 
     label=json.dumps(response, indent=2) 
     label = response['sentiment']['document']['label']   
-    #label = get_request(url,params=params,api_key=apikey)    
     return label
 
 

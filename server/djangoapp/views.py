@@ -102,21 +102,18 @@ def get_dealerships(request):
         return render(request, 'djangoapp/index.html', context)
 
 
-# Create a `get_dealership by state` view to render the specific dealer
+# Create a `get_dealership by state` view to render the specific dealer still in progress
 def get_dealer_by_state(request, dealer_state):
     context = {}
     if request.method == "GET":
         url = "https://chukwudimaco-3000.theiadocker-1-labs-prod-theiak8s-4-tor01.proxy.cognitiveclass.ai/dealerships/get"
         # Get dealers from the URL
         dealers = get_dealer_by_state_from_cf(url, dealerState=dealer_state.title())
-        #************
-        print(dealers)
         dealer_names = ', '.join([dealer.short_name for dealer in dealers])        
         dealer_state = ', '.join([dealer.st for dealer in dealers])  
         # Return a dealer short name
         return HttpResponse(f"<b>Dealer names:</b> {dealer_names} <br><br> <b>Dealers respective states:</b> {dealer_state}")
-    return render(request, 'djangoapp/index.html', context)
-    
+    return render(request, 'djangoapp/index.html', context)    
 
 
 # Create a `get_dealer_details` view to render the reviews of a dealer
@@ -161,8 +158,7 @@ def add_review(request, dealer_id, dealer_name):
         dealers_name=dealer_name 
         review = {}
         review["_id"] = f"{randint(1,(10**25))}"
-        review["_rev"] = f"{randint(1,(10**25))}"
-        #Still need to query admin site for car make
+        review["_rev"] = f"{randint(1,(10**25))}"        
         review["car_make"] = car_make
         review["car_model"] = car_model
         review["car_year"] = car_year
@@ -174,8 +170,7 @@ def add_review(request, dealer_id, dealer_name):
         review["review"]  = content
         review["review_time"] = f"{datetime.utcnow()}"
         review["dealer_name"] = dealers_name       
-        result = post_request(url,json_payload=review)           
-        #return HttpResponse(review)   
+        result = post_request(url,json_payload=review)                   
         return redirect("djangoapp:dealer_details", dealer_id=dealership_id,dealer_name=dealer_name)
     else:
         dealercars_by_id=get_cars_by_dealer_id(dealer_id)  

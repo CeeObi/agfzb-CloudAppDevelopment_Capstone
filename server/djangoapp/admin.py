@@ -4,9 +4,6 @@ from .models import CarMake, CarModel
 
 
 # Register your models here.
-
-
-
 # CarModelInline class
 class CarModelInline(admin.StackedInline):
     model = CarModel
@@ -14,8 +11,7 @@ class CarModelInline(admin.StackedInline):
 
 # CarModelAdmin class
 # class CarModelAdmin(admin.ModelAdmin):
-#     fields = []
-    
+#     fields = []    
 
 # CarMakeAdmin class with CarModelInline
 class CarMakeAdmin(admin.ModelAdmin):

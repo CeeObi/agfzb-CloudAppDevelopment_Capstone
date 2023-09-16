@@ -83,7 +83,7 @@ class DealerReview():
 
 
 
-#Created a CarDearler Inventory object model
+#Created a plain CarDearler Inventory object model
 class DealerCarInventory():
     def __init__(self, id ,dealer_id, name, model_id, bodytype, year, mod_mak_yr):
         self.id = id
