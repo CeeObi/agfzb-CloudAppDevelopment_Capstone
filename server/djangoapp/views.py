@@ -30,9 +30,6 @@ def get_car_collections():
                 car_collections[car_make_name].append(each_car_model)
     return car_collections
 
-   
-
-
 def get_cars_by_dealer_id(dealer_id):
     dealer_id=dealer_id
     all_car_collections=get_car_collections()    
