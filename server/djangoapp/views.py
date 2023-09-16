@@ -26,21 +26,24 @@ def get_car_collections():
         car_make_name = each_car_make["name"]    
         car_collections[car_make_name] = []
         for each_car_model in car_models:        
+            # print(each_car_model)
+            # print(car_make_name)            
             if each_car_id == each_car_model["model_id"]:              
                 car_collections[car_make_name].append(each_car_model)
     return car_collections
-    
+
 def get_cars_by_dealer_id(dealer_id):
-    all_car_collections=get_car_collections()
-    dealer_id_check=dealer_id
-    all_dealer_makes = []
-    for makes in all_car_collections:
-        make_of_car=all_car_collections[makes]
-        for indxs in range(0,len(make_of_car)):
-            all_makes = make_of_car[indxs]
-            if all_makes["dealer_id"] == dealer_id_check:                
-                all_dealer_makes.append(all_makes)
-    return all_dealer_makes
+    dealer_id=dealer_id
+    all_car_collections=get_car_collections()    
+    all_dealer_makes_availabe = []
+    for makes in all_car_collections:                
+        make_of_car=all_car_collections[makes]    
+        for indxs in range(0,len(make_of_car)):            
+            all_models = make_of_car[indxs]      
+            all_models["car_make"] = makes
+            if all_models["dealer_id"] == dealer_id:                
+                all_dealer_makes_availabe.append(all_models)    
+    return all_dealer_makes_availabe
 #########End of Queries to django Database    
             
 # Create your views here.
@@ -183,5 +186,14 @@ def add_review(request, dealer_id, dealer_name):
 
     
 
-result=get_cars_by_dealer_id(1)
+result=get_cars_by_dealer_id(2)
+# print(len(result))
+# print("____________")
 print(result)
+
+# for key in result:
+#     print(key)
+#     print(result[key])
+    
+
+
